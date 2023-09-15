@@ -16,6 +16,8 @@ Vector2 Character::getScreenPos()
 
 void Character::tick(float deltaTime)
 {
+    if (!getAlive())
+        return;
     if (IsKeyDown(KEY_A))
         velocity.x -= 1.0;
     if (IsKeyDown(KEY_D))
@@ -28,6 +30,7 @@ void Character::tick(float deltaTime)
 
     Vector2 origin{};
     Vector2 offset{};
+    float rotation{};
     if (rightLeft > 0.f)
     {
         origin = {0.f, weapon.height * scale};
@@ -37,6 +40,7 @@ void Character::tick(float deltaTime)
             getScreenPos().y + offset.y - weapon.height * scale,
             weapon.width * scale,
             weapon.height * scale};
+        rotation = IsMouseButtonDown(MOUSE_LEFT_BUTTON) ? 35.f : 0.f;
     }
     else
     {
@@ -47,12 +51,13 @@ void Character::tick(float deltaTime)
             getScreenPos().y + offset.y - weapon.height * scale,
             weapon.width * scale,
             weapon.height * scale};
+        rotation = IsMouseButtonDown(MOUSE_LEFT_BUTTON) ? -35.f : 0.f;
     }
 
     // draw the sword
     Rectangle source{0.f, 0.f, static_cast<float>(weapon.width) * rightLeft, static_cast<float>(weapon.height)};
     Rectangle dest{getScreenPos().x + offset.x, getScreenPos().y + offset.y, weapon.width * scale, weapon.height * scale};
-    DrawTexturePro(weapon, source, dest, origin, 0.f, WHITE);
+    DrawTexturePro(weapon, source, dest, origin, rotation, WHITE);
 
     DrawRectangleLines(
         weaponCollisionRec.x, weaponCollisionRec.y, weaponCollisionRec.width, weaponCollisionRec.height, RED);

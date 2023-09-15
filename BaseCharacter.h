@@ -12,6 +12,8 @@ public:
     void undoMovement();
     Rectangle getCollisionRec();
     virtual Vector2 getScreenPos() = 0;
+    bool getAlive() { return alive; }
+    void setAlive(bool isAlive) { alive = isAlive; }
 
 protected:
     Vector2 worldPos{};
@@ -31,6 +33,9 @@ protected:
     float speed{4.f};
     float scale{4.f};
     Vector2 velocity{};
+
+private:
+    bool alive{true};
 };
 
 #endif
